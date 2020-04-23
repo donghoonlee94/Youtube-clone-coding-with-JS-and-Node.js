@@ -1,0 +1,12 @@
+nodeMon : 소스 수정 시 자동으로 서버를 재시작 해주는 것. 
+명령어 예시 : "nodemon --exec babel-node index.js --delay 2"
+
+babel : ES6를 사용할 수 있게 해주는 컴파일러
+사용법 : .babelrc 파일을 만들고 설정 코드를 작성해야함.
+
+middleware dependency 
+
+    body-parser: form을 통해 데이터가 오는 것을 이해하기 위한 middleware // json = json , unlencoded = html
+    cookie-parser: cookie에 저장된 정보를 이해하기 위한 middleware
+    helmet: 보안 강화를 위한 middleware
+    morgan: logging을 위한 middleware
