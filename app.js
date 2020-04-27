@@ -8,24 +8,26 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import { localsMiddleware } from "./middlewares";
+import routes from "./routes";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
-import routes from "./routes";
+
 
 // express 실행 
 const app = express();
-// 4000 포트와 연결
 
 // request, response, get 메소드의 경로로 접근하면 해당 함수를 실행한다. send로 응답을 보내줄 수 있다. 
 
 // use()는 middleware,순서가 중요, 위에서 아래로 실행되기 때문에 가장 위는 글로벌, 위에서 아래 순으로 순서를 정할 수 있음.
+app.use(helmet());
+app.set("view engine", "pug");
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(helmet());
 app.use(morgan("dev"));
-
+app.use(localsMiddleware);
 
 // /user에서 userRouter를 사용하겠다는 것,
 app.use(routes.home, globalRouter);
