@@ -1,50 +1,23 @@
-export const videos = [
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
+
+// mongoDB와 연결, mongoose.connect(' mongoDB서버 URL/이름 ')
+mongoose.connect(
+  process.env.MONGO_URL,
   {
-    id: 324393,
-    title: "Video awesome",
-    description: "This is something I love",
-    views: 24,
-    videoFile: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-    creator: {
-      id: 121212,
-      name: "Nicolas",
-      email: "nico@las.com"
-    }
-  },
-  {
-    id: 1212121,
-    title: "Video super",
-    description: "This is something I love",
-    views: 24,
-    videoFile: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-    creator: {
-      id: 121212,
-      name: "Nicolas",
-      email: "nico@las.com"
-    }
-  },
-  {
-    id: 55555,
-    title: "Video nice",
-    description: "This is something I love",
-    views: 24,
-    videoFile: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-    creator: {
-      id: 121212,
-      name: "Nicolas",
-      email: "nico@las.com"
-    }
-  },
-  {
-    id: 11111,
-    title: "Video perfect",
-    description: "This is something I love",
-    views: 24,
-    videoFile: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-    creator: {
-      id: 121212,
-      name: "Nicolas",
-      email: "nico@las.com"
-    }
+    useNewUrlParser: true,
+    useFindAndModify: false
   }
-];
+);
+
+
+const db = mongoose.connection;
+
+const handleOpen = () => console.log("✅  Connected to DB");
+const handleError = error => console.log(`❌ Error on DB Connection:${error}`);
+
+// 연결되면 실행되는 함수, on으로 error를 묶을 경우 에러 발생 시 error가 인자로 들어온다.
+
+db.once("open", handleOpen);
+db.on("error", handleError);
