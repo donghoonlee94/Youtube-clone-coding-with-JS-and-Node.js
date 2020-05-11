@@ -1,7 +1,15 @@
 import routes from "../routes";
+import Video from "../models/Video";
 
-export const home = (req, res) => {
-  res.render("home", { pageTitle: "Home", videos });
+export const home = async (req, res) => {
+  try {
+    // find({}) 모든 데이터 베이스 정보를 가져온다. 
+    const videos = await Video.find({});
+    res.render("home", { pageTitle: "Home", videos });
+  } catch (error) {
+    console.log(error);
+    res.render("home", { pageTitle: "Home", videos: [] });
+  }
 };
 
 export const search = (req, res) => {
@@ -14,12 +22,20 @@ export const search = (req, res) => {
 export const getUpload = (req, res) =>
   res.render("upload", { pageTitle: "Upload" });
 
-export const postUpload = (req, res) => {
+export const postUpload = async (req, res) => {
+  // 이 함수를 부르기 전 uploadVideo 미들웨어 함수에서 multer으로 전달받은 파일을 requset.file에 포함시켜줌. 그 외에 텍스트 필드는 body에 저장됨.
   const {
-    body: { file, title, description }
+    body: { title, description },
+    file: { path }
   } = req;
-  // To Do: Upload and save video
-  res.redirect(routes.videoDetail(324393));
+  // create 로 저장하는 것. 객체나 배열을 전달 받음. 프로미스 함수 
+  const newVideo = await Video.create({
+    fileUrl: path,
+    title,
+    description
+  });
+  // id는 mongodb에서 임의로 만들어줌.
+  res.redirect(routes.videoDetail(newVideo.id));
 };
 
 export const videoDetail = (req, res) => res.render("videoDetail", { pageTitle: 'videoDetail' });
