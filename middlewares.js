@@ -2,7 +2,7 @@ import routes from "./routes";
 import multer from 'multer';
 
 // dest or storage : 파일이 저장될 위치를 뜻함.
-const multerVideo = multer({ dest: "videos/" });
+const multerVideo = multer({ dest: "uploads/videos/" });
 
 // res.locals.{변수} 를 등록함으로 전역에서 해당 값을 참고할 수 있음.
 export const localsMiddleware = (req, res, next) => {

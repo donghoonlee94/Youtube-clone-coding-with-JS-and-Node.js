@@ -23,6 +23,8 @@ const app = express();
 // use()는 middleware,순서가 중요, 위에서 아래로 실행되기 때문에 가장 위는 글로벌, 위에서 아래 순으로 순서를 정할 수 있음.
 app.use(helmet());
 app.set("view engine", "pug");
+// express의 기본 제공 middleware로, 루트 디렉토리를 지정함. 앞에 /uploads 경로를 통해 파일을 로드할 수 있게 해줌.
+app.use('/uploads', express.static("uploads"));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

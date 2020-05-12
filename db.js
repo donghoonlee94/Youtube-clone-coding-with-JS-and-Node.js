@@ -2,12 +2,13 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 
-// mongoDB와 연결, mongoose.connect(' mongoDB서버 URL/이름 ')
+// mongoDB와 연결, mongoose.connect(' mongoDB서버 URL/이름 ') 커텍트는 mongoose에 연결, connection은 그 인스턴스를 받는 역할.
 mongoose.connect(
   process.env.MONGO_URL,
   {
     useNewUrlParser: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    useUnifiedTopology: true
   }
 );
 
