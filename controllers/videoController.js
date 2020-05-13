@@ -38,6 +38,17 @@ export const postUpload = async (req, res) => {
   res.redirect(routes.videoDetail(newVideo.id));
 };
 
-export const videoDetail = (req, res) => res.render("videoDetail", { pageTitle: 'videoDetail' });
+export const videoDetail = async (req, res) => {
+  const {
+    params: { id }
+  } = req;
+  // const VIDEO_DETAIL = "/:id"; 로 되어 있어서 params에 id로 받을 수 있음.
+  try {
+    const video = await Video.findById(id);
+    res.render("videoDetail", { pageTitle: "Video Detail", video });
+  } catch (error) {
+    res.redirect(routes.home);
+  }
+};
 export const editVideo = (req, res) => res.render("editVideo", { pageTitle: 'editVideo' });
 export const deleteVideo = (req, res) => res.render("deleteVideo", { pageTitle: 'deleteVideo' });
