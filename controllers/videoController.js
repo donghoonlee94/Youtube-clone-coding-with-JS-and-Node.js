@@ -34,6 +34,16 @@ export const postUpload = async (req, res) => {
     title,
     description
   });
+  // {
+  //   views: 0,
+  //     comments: [],
+  //       _id: 5ec67fab44ae8b13c078d4c5,
+  //         fileUrl: 'uploads\\videos\\9b5fdfd6c4af1867b1aeb1f0de0dbd97',
+  //           title: '1234',
+  //             description: '1234',
+  //               createdAt: 2020 - 05 - 21T13: 18: 35.671Z,
+  //                 __v: 0
+  // }  
   // id는 mongodb에서 임의로 만들어줌.
   res.redirect(routes.videoDetail(newVideo.id));
 };
@@ -45,10 +55,41 @@ export const videoDetail = async (req, res) => {
   // const VIDEO_DETAIL = "/:id"; 로 되어 있어서 params에 id로 받을 수 있음.
   try {
     const video = await Video.findById(id);
-    res.render("videoDetail", { pageTitle: "Video Detail", video });
+    res.render("videoDetail", { pageTitle: video.title, video });
   } catch (error) {
     res.redirect(routes.home);
   }
 };
-export const editVideo = (req, res) => res.render("editVideo", { pageTitle: 'editVideo' });
-export const deleteVideo = (req, res) => res.render("deleteVideo", { pageTitle: 'deleteVideo' });
+export const getEditVideo = async (req, res) => {
+  const {
+    params: { id }
+  } = req;
+  try {
+    const video = await Video.findById(id);
+    res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
+  } catch (error) {
+    res.redirect(routes.home);
+  }
+};
+
+export const postEditVideo = async (req, res) => {
+  const {
+    params: { id },
+    body: { title, description }
+  } = req;
+  try {
+    await Video.findOneAndUpdate({ _id: id }, { title, description });
+    res.redirect(routes.videoDetail(id));
+  } catch (error) {
+    res.redirect(routes.home);
+  }
+};
+export const deleteVideo = async (req, res) => {
+  const {
+    params: { id }
+  } = req;
+  try {
+    await Video.findOneAndRemove({ _id: id });
+  } catch (error) { }
+  res.redirect(routes.home);
+};
