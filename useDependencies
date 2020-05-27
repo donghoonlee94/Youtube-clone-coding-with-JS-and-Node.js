@@ -27,3 +27,9 @@ const multerVideo = multer({ dest: "videos/" });
 
 // single : 하나의 파일만 , 인자는 input의 name을 인자로 받음. 해당 name으로 들어오는 파일에 대한 처리.
 export const uploadVideo = multerVideo.single("videoFile");
+
+// webpack, package.json 에서 script 구문에 아래 코드를 추가하면 npm dev:assets, npm build:assets으로 실행 시킬 수 있고 WEBPACK_ENV에 dev, prod 가 들어간다.
+    "dev:assets": "WEBPACK_ENV=development webpack",
+    "build:assets": "WEBPACK_ENV=production webpack"
+
+// windows 환경에서 .env 내에 변수를 동적으로 변환하기 위해서는 cross-env를 설치 & 사용해야 한다. 스크립트 앞에 작성 ( "dev:assets": "croess-env WEBPACK_ENV=development webpack", )
