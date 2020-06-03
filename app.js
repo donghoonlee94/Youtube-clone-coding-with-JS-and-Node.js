@@ -8,11 +8,14 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import passport from 'passport';
 import { localsMiddleware } from './middlewares';
 import routes from './routes';
 import userRouter from './routers/userRouter';
 import videoRouter from './routers/videoRouter';
 import globalRouter from './routers/globalRouter';
+
+import './passport';
 
 // express 실행
 const app = express();
@@ -29,6 +32,9 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
+// passport를 초기화하고 위에 cookieParser로 가져온 쿠키를 session 저장함.
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(localsMiddleware);
 
 // /user에서 userRouter를 사용하겠다는 것,

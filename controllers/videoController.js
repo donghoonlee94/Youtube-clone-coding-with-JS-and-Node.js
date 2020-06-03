@@ -38,7 +38,7 @@ export const postUpload = async (req, res) => {
     body: { title, description },
     file: { path },
   } = req;
-  // create 로 저장하는 것. 객체나 배열을 전달 받음. 프로미스 함수
+  // create 로 데이터베이스에 저장하는 것. 객체나 배열을 전달 받음. 프로미스 함수
   const newVideo = await Video.create({
     fileUrl: path,
     title,
