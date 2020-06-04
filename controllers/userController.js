@@ -14,10 +14,10 @@ export const postJoin = async (req, res, next) => {
   } = req;
   if (password !== password2) {
     // error를 res 해준다.
-    res.status(400);
-    res.render('join', { pageTitle: 'Join' });
-  } else {
-    res.redirect(routes.home);
+    return res.status(400);
+    // res.render('join', { pageTitle: 'Join' });
+    // } else {
+    //   res.redirect(routes.home);
   }
   try {
     const user = await User({

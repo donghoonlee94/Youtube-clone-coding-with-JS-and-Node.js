@@ -2,6 +2,7 @@
 //  const express = require('express');  < es6 문법을 사용하지 않은 경우
 // require는 어디선가 (node_modules내 포함)express를 찾아옴.
 // babel 설치 후 es6 문법으로 import를 사용할 수 있음.
+import dotenv from 'dotenv';
 import 'core-js';
 import express from 'express';
 import morgan from 'morgan';
@@ -9,12 +10,14 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import passport from 'passport';
+import session from "express-session";
 import { localsMiddleware } from './middlewares';
 import routes from './routes';
 import userRouter from './routers/userRouter';
 import videoRouter from './routers/videoRouter';
 import globalRouter from './routers/globalRouter';
 
+dotenv.config();
 import './passport';
 
 // express 실행
@@ -32,6 +35,16 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
+// secret – 쿠키를 임의로 변조하는것을 방지하기 위한 값 입니다. 이 값을 통하여 세션을 암호화 하여 저장합니다.
+// resave – 세션을 언제나 저장할 지(변경되지 않아도) 정하는 값입니다.express - session documentation에서는 이 값을 false 로 하는것을 권장하고 필요에 따라 true로 설정합니다.
+//   saveUninitialized – 세션이 저장되기 전에 uninitialized 상태로 미리 만들어서 저장합니다.
+app.use(
+  session({
+    secret: process.env.COOKIE_SECRET,
+    resave: true,
+    saveUninitialized: false
+  })
+);
 // passport를 초기화하고 위에 cookieParser로 가져온 쿠키를 session 저장함.
 app.use(passport.initialize());
 app.use(passport.session());
