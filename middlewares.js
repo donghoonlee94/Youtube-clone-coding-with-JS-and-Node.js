@@ -13,5 +13,20 @@ export const localsMiddleware = (req, res, next) => {
   next();
 };
 
+
+export const onlyPublic = (req, res, next) => {
+  if (req.user) {
+    return res.redirect(routes.home);
+  }
+  return next();
+};
+
+export const onlyPrivate = (req, res, next) => {
+  if (req.user) {
+    return next();
+  }
+  return res.redirect(routes.home);
+};
+
 // single : 하나의 파일만 , 인자는 input의 name을 인자로 받음. 해당 name으로 들어오는 파일에 대한 처리.
 export const uploadVideo = multerVideo.single('videoFile');
