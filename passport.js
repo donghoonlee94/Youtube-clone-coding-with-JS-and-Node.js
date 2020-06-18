@@ -1,8 +1,19 @@
 import passport from 'passport';
 import User from './models/User';
+import githubStrategy from 'passport-github';
+import { githubLoginCallback } from './controllers/userController'
+import routes from "./routes";
+
 
 // createStrategy는 이미 구성된 passport-local의 localstrategy를 생성함.
 passport.use(User.createStrategy());
+passport.use(new githubStrategy({
+  clientID: process.env.GH_ID,
+  clientSecret: process.env.GH_SECRET,
+  callbackURL: `http://localhost:4000${routes.githubCallback}`
+},
+  githubLoginCallback
+))
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
