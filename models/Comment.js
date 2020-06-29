@@ -8,6 +8,11 @@ const CommentSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  creator: {
+    // 명시적으로 id를 나타낼 때 사용
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
   }
 });
 

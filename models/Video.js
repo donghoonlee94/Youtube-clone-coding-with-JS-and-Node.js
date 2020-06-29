@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 // schema는 형태 (definition)를 의미함. 형태를 만드는 것
 
 const VideoSchema = new mongoose.Schema({
-    // required : 값에 문제가 있어 (값이 오지 않아) 에러가 발생할 경우 뱉게 됨.
-    // type은 mongoose 에서 어떤 타입을 사용할 수 있는지 확인 가능.
+  // required : 값에 문제가 있어 (값이 오지 않아) 에러가 발생할 경우 뱉게 됨.
+  // type은 mongoose 에서 어떤 타입을 사용할 수 있는지 확인 가능.
   fileUrl: {
     type: String,
     required: "File URL is required"
@@ -28,7 +28,11 @@ const VideoSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Comment"
     }
-  ]
+  ],
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  }
 });
 
 // model의 이름은 "Video", Schema는 위의 변수. mongoose.model('이름', '스키마')

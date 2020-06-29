@@ -37,12 +37,14 @@ export const postUpload = async (req, res) => {
   const {
     body: { title, description },
     file: { path },
+    user
   } = req;
   // create 로 데이터베이스에 저장하는 것. 객체나 배열을 전달 받음. 프로미스 함수
   const newVideo = await Video.create({
     fileUrl: path,
     title,
     description,
+    creator: user.id
   });
   // {
   //   views: 0,
@@ -55,6 +57,9 @@ export const postUpload = async (req, res) => {
   //                 __v: 0
   // }
   // id는 mongodb에서 임의로 만들어줌.
+  // newVideo.id (ObjectID)를 user의 videos에 푸쉬
+  user.videos.push(newVideo.id);
+  user.save();
   res.redirect(routes.videoDetail(newVideo.id));
 };
 
@@ -64,7 +69,9 @@ export const videoDetail = async (req, res) => {
   } = req;
   // const VIDEO_DETAIL = "/:id"; 로 되어 있어서 params에 id로 받을 수 있음.
   try {
-    const video = await Video.findById(id);
+    // populate는 ObjectId 타입에만 사용할 수 있고 객체를 가져옴.
+    const video = await Video.findById(id).populate("creator");
+    console.log(video);
     res.render('videoDetail', { pageTitle: video.title, video });
   } catch (error) {
     res.redirect(routes.home);
