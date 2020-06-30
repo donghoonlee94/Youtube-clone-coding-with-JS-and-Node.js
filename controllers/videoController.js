@@ -71,7 +71,6 @@ export const videoDetail = async (req, res) => {
   try {
     // populate는 ObjectId 타입에만 사용할 수 있고 객체를 가져옴.
     const video = await Video.findById(id).populate("creator");
-    console.log(video);
     res.render('videoDetail', { pageTitle: video.title, video });
   } catch (error) {
     res.redirect(routes.home);
@@ -83,7 +82,10 @@ export const getEditVideo = async (req, res) => {
   } = req;
   try {
     const video = await Video.findById(id);
-    res.render('editVideo', { pageTitle: `Edit ${video.title}`, video });
+    if (video.creator !== req.user.id) {
+      throw Error();
+    }
+    res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
   } catch (error) {
     res.redirect(routes.home);
   }
@@ -106,6 +108,10 @@ export const deleteVideo = async (req, res) => {
     params: { id },
   } = req;
   try {
+    const video = await Video.findById(id);
+    if (video.creator !== req.user.id) {
+      throw Error();
+    }
     await Video.findOneAndRemove({ _id: id });
   } catch (error) {
     console.log(error);
