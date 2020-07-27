@@ -1,11 +1,16 @@
 import axios from "axios";
+
 const addCommentForm = document.getElementById("jsAddComment");
 const commentList = document.getElementById("jsCommentList");
 const commentNumber = document.getElementById("jsCommentNumber");
 
+
+
 const increaseNumber = () => {
   commentNumber.innerHTML = parseInt(commentNumber.innerHTML, 10) + 1;
 };
+
+
 
 const addComment = comment => {
   const li = document.createElement("li");
@@ -16,13 +21,14 @@ const addComment = comment => {
   increaseNumber();
 };
 
-const sendComment = async comment => {
+const sendComment = async (comment) => {
   const videoId = window.location.href.split("/videos/")[1];
+  console.log(videoId)
   const response = await axios({
-    url: `/api/${videoId}/comment`,
     method: "POST",
+    url: `/api/${videoId}/comment`,
     data: {
-      comment
+      comment: comment,
     }
   });
   if (response.status === 200) {
@@ -41,6 +47,7 @@ const handleSubmit = event => {
 function init() {
   addCommentForm.addEventListener("submit", handleSubmit);
 }
+
 
 if (addCommentForm) {
   init();
